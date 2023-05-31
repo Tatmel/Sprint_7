@@ -2,6 +2,8 @@ import clients.CourierClient;
 import clients.OrderClient;
 import dataprovider.CourierProvider;
 import dataprovider.OrderProvider;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
@@ -26,6 +28,8 @@ public class GetListOfOrdersTest {
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
     }
     @Test
+    @DisplayName("Успешное получение списка заказов без указания id курьера")
+    @Description("Проверка статуса кода и отсутствия id курьера в заказах")
     public void getListOfOrdersWithoutCourierId() {
         //создать заказ
         CreateOrderRequest createOrderRequest = OrderProvider.getRandomCreateOrderRequest();
@@ -39,6 +43,8 @@ public class GetListOfOrdersTest {
 
     }
     @Test
+    @DisplayName("Успешное получение списка заказов существующего курьера")
+    @Description("Проверка статуса кода и наличия заказа у курьера")
     public void getListOfOrdersWithCorrectCourierId() {
         //создать курьера
         CreateCourierRequest createCourierRequest = CourierProvider.getRandomCreateCourierRequest();

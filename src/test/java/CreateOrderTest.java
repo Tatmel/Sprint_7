@@ -1,5 +1,7 @@
 import clients.CourierClient;
 import clients.OrderClient;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
@@ -16,6 +18,7 @@ import static io.restassured.RestAssured.given;
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
     private Integer track;
+    private String orderBaseUri = "/api/v1/orders";
 
     private final String firstName;
     private final String lastName;
@@ -52,13 +55,15 @@ public class CreateOrderTest {
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
     }
     @Test
+    @DisplayName("Успешное создание заказа при выборе любого цвета(BLACK or GREY), при выборе двух цветов и при отсутствии выбора цвета")
+    @Description("Проверка статуса кода и присвоения track заказу")
     public void createOrderBeSuccessful() {
     track =    given()
                 .contentType(ContentType.JSON)
                 .baseUri("http://qa-scooter.praktikum-services.ru/")
                 .body(createOrder())
                 .when()
-                .post("/api/v1/orders")
+                .post(orderBaseUri)
                 .then()
                 .statusCode(201)
                 .assertThat().body("track", Matchers.notNullValue())
@@ -72,7 +77,7 @@ public class CreateOrderTest {
                     .baseUri("http://qa-scooter.praktikum-services.ru/")
                     .pathParam("track", track)
                     .when()
-                    .put("/api/v1/orders/cancel/{track}");
+                    .put(orderBaseUri + "/cancel/{track}");
         }
     }
 }

@@ -80,9 +80,9 @@ _**Протестировать ручки:**_
   ```sh
   mvn clean test
   ```
-* bash
+* mvn
   ```sh
-  allure serve target/surefire-reports/
+  mvn allure:serve
   ```
 
 <p align="right">(<a href="#project-name">back to top</a>)</p>
